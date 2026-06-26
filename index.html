@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天災期間院所營運機制與 QA - 馬光醫療網</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;    /* 馬光安心綠 */
+            --secondary-color: #e8f5e9;  /* 溫暖柔綠 */
+            --warm-bg: #fdfaf7;          /* 暖心米杏色背景 */
+            --warm-accent: #f57c00;      /* 提醒橘色 */
+            --text-color: #333333;
+            --card-border: #ebdcd0;      /* 暖色調邊框 */
+            --tab-inactive: #f0eae4;     /* 未選取頁籤色 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            background-color: var(--warm-bg);
+            /* 豐富背景：細緻的點狀暖暖紋理 */
+            background-image: radial-gradient(#ebdcd0 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(139, 115, 95, 0.12);
+        }
+
+        /* 頂部標頭與四個吉祥物齊聚 */
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+            padding-bottom: 25px;
+            border-bottom: 2px dashed var(--secondary-color);
+        }
+
+        .header-mascot-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .mascot-img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(2px 4px 6px rgba(139, 115, 95, 0.15));
+            transition: transform 0.2s ease;
+        }
+
+        .mascot-img:hover {
+            transform: translateY(-4px);
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            color: #6d5c50;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* 溫暖分頁按鈕設計 */
+        .tabs-container {
+            display: flex;
+            margin-bottom: 35px;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--tab-inactive);
+            padding: 5px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #665a50;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background-color: #ffffff;
+            color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.12);
+        }
+
+        /* 分頁區塊顯示與隱藏 */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 機制說明卡片樣式 */
+        .section-box {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .section-box h2 {
+            color: var(--primary-color);
+            font-size: 19px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-box h2 svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--primary-color);
+        }
+
+        .text-content {
+            font-size: 15.5px;
+            color: #4a423a;
+            margin-bottom: 15px;
+        }
+
+        /* 三大決策機制卡片 */
+        .mode-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        @media (max-width: 600px) {
+            .mode-container { grid-template-columns: 1fr; }
+        }
+
+        .mode-card {
+            background: var(--secondary-color);
+            border: 1px solid #c8e6c9;
+            padding: 20px 15px;
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mode-card svg {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+        }
+
+        .mode-card h3 {
+            color: var(--primary-color);
+            font-size: 17px;
+            margin-bottom: 4px;
+        }
+
+        .mode-card p {
+            font-size: 13.5px;
+            color: #4a504a;
+        }
+
+        .list-style {
+            list-style-type: none;
+            margin: 15px 0;
+            padding-left: 5px;
+        }
+
+        .list-style li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #4a423a;
+        }
+
+        .list-style li::before {
+            content: "🧡";
+            position: absolute;
+            left: 0;
+            font-size: 12px;
+            top: 2px;
+        }
+
+        .box-footer {
+            font-size: 14px;
+            color: #665e56;
+            background: #fdfbfa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #cdc3ba;
+        }
+
+        /* 內頁小橫幅：帶有吉祥物與問候 */
+        .intro-banner {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--secondary-color), #ffffff);
+            padding: 18px 20px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            border: 1px solid #d0ebd2;
+        }
+
+        .intro-banner-img {
+            height: 75px;
+            margin-right: 15px;
+        }
+
+        .intro-banner p {
+            font-size: 15px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* FAQ 樣式優化 */
+        .faq-item {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.06);
+        }
+
+        .faq-question {
+            padding: 18px 20px;
+            background-color: #ffffff;
+            font-weight: 600;
+            font-size: 16.5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            color: #3d342e;
+        }
+
+        .faq-question::after {
+            content: '＋';
+            font-size: 18px;
+            color: var(--primary-color);
+            transition: transform 0.2s ease;
+            font-weight: bold;
+        }
+
+        .faq-item.active .faq-question {
+            background-color: #fdfcfb;
+            border-bottom: 1px solid var(--card-border);
+            color: var(--primary-color);
+        }
+
+        .faq-item.active .faq-question::after {
+            content: '－';
+        }
+
+        .faq-answer {
+            padding: 20px;
+            display: none;
+            background: #ffffff;
+            font-size: 15.5px;
+            color: #4a423a;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .reminder {
+            margin-top: 15px;
+            background-color: #fff8ef;
+            border-left: 4px solid var(--warm-accent);
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #5c5043;
+        }
+
+        .reminder strong {
+            color: #d86c00;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 13.5px;
+            color: #9c8f84;
+            border-top: 1px solid #ebdcd0;
+            padding-top: 25px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-mascot-container">
+            <img class="mascot-img" src="全部職務馬寶妞_馬寶醫師.png" alt="馬寶醫師">
+            <img class="mascot-img" src="全部職務馬寶妞_馬妞制服.png" alt="馬妞制服">
+            <img class="mascot-img" src="全部職務馬寶妞_馬妞CRM.png" alt="馬妞CRM">
+            <img class="mascot-img" src="全部職務馬寶妞_馬妞藥師 複本.png" alt="馬妞藥師">
+        </div>
+        <h1>天災期間院所營運機制與 QA</h1>
+        <p>💚 以同仁安全為優先・兼顧病患照護 💚</p>
+    </header>
+
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab(this, 'mechanism-tab')">📋 營運機制與初衷</button>
+        <button class="tab-btn" onclick="switchTab(this, 'faq-tab')">💬 天災假常見 QA</button>
+    </div>
+
+    <div id="mechanism-tab" class="tab-content active">
+        <div class="intro-banner">
+            <img class="intro-banner-img" src="全部職務馬寶妞_馬妞CRM.png" alt="馬妞CRM">
+            <p>親愛的馬光夥伴：每一次天災決策，都是我們經過審慎評估、守護彼此的決定。請先閱讀我們的核心考量點：</p>
+        </div>
+
+        <div class="section-box">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.5 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                一、 天災期間營運原則
+            </h2>
+            <div class="text-content">天然災害期間，公司將秉持「善待同仁、善待患者」的核心價值，在確保安全的前提下，兼顧醫療服務不中斷，並依實際天候狀況做最適切的營運安排。</div>
+        </div>
+
+        <div class="section-box">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                二、 院所營運決策機制
+            </h2>
+            <div class="text-content">政府宣布停班停課，屬天然災害停止上班措施，並不代表各地實際風雨狀況一致。因此，馬光不採一律於前一晚宣布全面休診，而是由各院主管於當日上午 7:00，依院所所在地實際天候及交通狀況綜合評估，決定當日營運方式：</div>
+            
+            <div class="mode-container">
+                <div class="mode-card">
+                    <svg viewBox="0 0 24 24" fill="#f57c00"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5c.55 0 1 .45 1 1v2c0 .55-.45 1-1 1s-1-.45-1-1V3c0-.55-.45-1-1-1zm0 14c.55 0 1 .45 1 1v2c0 .55-.45 1-1 1s-1-.45-1-1v-2c0-.55-.45-1-1-1zM5 11H3c-.55 0-1-.45-1-1s.45-1 1-1h2c.55 0 1 .45 1 1s-.45 1-1 1zm16 0h-2c-.55 0-1-.45-1-1s.45-1 1-1h2c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>
+                    <h3>☀️ 正常看診</h3>
+                    <p>風雨未達影響程度，維持正常醫療服務。</p>
+                </div>
+                <div class="mode-card">
+                    <svg viewBox="0 0 24 24" fill="#1976d2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.69 13.13c-.94.94-2.48.94-3.42 0l-4.4-4.4c-.94-.94-.94-2.48 0-3.42.94-.94 2.48-.94 3.42 0l4.4 4.4c.94.94.94 2.48 0 3.42z"/></svg>
+                    <h3>🌀 啟動颱風班</h3>
+                    <p>依預規劃名單、鄰近同仁優先彈性出勤。</p>
+                </div>
+                <div class="mode-card">
+                    <svg viewBox="0 0 24 24" fill="#d32f2f"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>
+                    <h3>🛑 休診</h3>
+                    <p>風雨已明顯影響通勤安全，啟動休診機制。</p>
+                </div>
+            </div>
+            
+            <div class="box-footer">此機制係因各地區受颱風影響程度不同，即使同一縣市，各區域風雨及交通狀況亦可能有所差異，因此以當日實際狀況作為判斷依據，更能兼顧安全與服務需求。</div>
+        </div>
+
+        <div class="section-box" style="background-color: #fafafa;">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                三、 建立此機制的原因（初衷與考量）
+            </h2>
+            <div class="text-content" style="line-height: 1.75;">過去，公司曾全面比照政府停班停課宣布休診，但多次遇到實際風雨不大，甚至無風無雨、天氣晴朗的情況。<br><br>當患者依原訂療程希望回診時，卻因院所休診而無法就醫，不僅影響後續治療安排，也曾接獲患者反映，周邊商家、百貨公司及其他診所皆正常營業，唯獨馬光休診，造成就醫上的不便。<br><br>身為醫療院所，我們希望在安全無虞的前提下，盡可能維持患者必要的醫療服務。</div>
+        </div>
+
+        <div class="section-box">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 15l-4-4 1.41-1.41L10 13.17l7.59-7.59L19 7l-9 9z"/></svg>
+                四、 同仁安全照顧措施
+            </h2>
+            <div class="text-content">同仁安全始終是公司最優先考量。若當日風雨已影響通勤安全，院所將視情況休診；若天候仍適合安全出勤，則依既有颱風班制度運作。</div>
+            <ul class="list-style">
+                <li>平時預先規劃颱風班名單，以鄰近院所同仁優先支援。</li>
+                <li>優先考量同仁通勤距離及安全性安排出勤.</li>
+                <li>提供天災出勤交通補助，協助降低同仁通勤負擔。</li>
+            </ul>
+            <div class="box-footer" style="border-left-color: var(--warm-accent); font-weight: 500;">同時，公司也尊重每位同仁對自身安全的判斷；如因天候因素確有通勤安全疑慮，應主動與院所主管聯繫，共同討論最適切的安排。</div>
+        </div>
+    </div>
+
+    <div id="faq-tab" class="tab-content">
+        <div class="intro-banner" style="background: linear-gradient(135deg, #fff3e0, #ffffff); border-color: #ffe0b2;">
+            <img class="intro-banner-img" src="全部職務馬寶妞_馬妞藥師 複本.png" alt="馬妞藥師">
+            <p>針對天災出勤、遲到或薪資等權益，馬妞幫大家整理了最常見的問答，點擊問題即可展開查閱喔！</p>
+        </div>
+        <div class="faq-section" id="faqContainer"></div>
+    </div>
+
+    <footer>
+        <p>馬光醫療網 管理處 人才資源發展</p>
+    </footer>
+</div>
+
+<script>
+    // FAQ 資料庫
+    const faqData = [
+        {
+            id: 1,
+            question: "Q1：今天颱風天，如果因天候影響交通而遲到，會算遲到嗎？",
+            answer: "原則上不會直接以遲到處理。<br><br>若政府宣布停班停課，但院所評估後仍正常營運，同仁配合服務需求出勤，若因天候因素影響交通而延誤到院，公司原則上都會協助同仁處理，不會直接列為遲到。<br><br>如有出勤異常情形，請同仁向區會計登記，以利後續協助處理。",
+            reminder: "請同仁仍以自身安全為優先；若預計會延後到院，也請提前通知院所，以利掌握出勤情形及安排現場人力調度。"
+        },
+        {
+            id: 2,
+            question: "Q2：颱風天出勤是不是有雙倍薪？",
+            answer: "沒有。<br><br>政府宣布停班停課屬於天然災害停止上班措施，並非國定假日、例假日或休息日，因此依法並沒有雙倍薪資規定。<br><br>不過，感謝每位願意在天災期間協助維持醫療服務的夥伴，公司將提供交通補助，協助降低同仁通勤負擔，也希望讓大家在兼顧服務的同時，能更安心出勤。",
+            reminder: ""
+        },
+        {
+            id: 3,
+            question: "Q3：政府宣布停班停課，但院所通知正常開診，我一定要出勤嗎？",
+            answer: "馬光因醫療服務性質，部分院所可能依現場風雨狀況維持營運。<br><br>若院所正常開診，原則上同仁仍依排定班表出勤；但若同仁因颱風或其他天災因素，評估自身通勤安全後認為不宜出勤，公司也會尊重同仁以安全為優先。<br><br>出勤者正常給薪；若不便出勤，可依公司規定使用天然災害假或其他可運用之假別。",
+            reminder: "若決定不出勤，請儘早通知院所，方便現場安排人力，也讓病患服務能順利銜接。"
+        },
+        {
+            id: 4,
+            question: "Q4：今天院所所在地沒有停班停課，但我住的地方停班停課，可以不出勤嗎？",
+            answer: "可以依自身通勤安全評估。<br><br>外要同仁的工作地、居住地或通勤必經地區任一地區宣布停班停課，即可依自身通勤狀況評估是否適合出勤。<br><br>若評估不宜出勤，請盡早通知院所，公司也會尊重同仁以安全為優先。",
+            reminder: "請與院所保持聯繫，方便掌握出勤情形及安排現場人力。"
+        },
+        {
+            id: 5,
+            question: "Q5：如果院所因風雨過大決定臨時停診，今天沒有上班怎麼辦？",
+            answer: "若院所因天候因素調整營運或臨時停診，同仁當日可依公司規定使用天然災害假或其他可運用之假別，不影響全勤紀錄。<br><br>公司也會依當日實際營運及相關規定協助辦理後續作業，並以兼顧同仁權益及病患照護為原則。",
+            reminder: ""
+        },
+        {
+            id: 6,
+            question: "Q6：兼職同仁平常見紅休，颱風天還需要上班嗎？",
+            answer: "天災假並非國定假日或例假，因此沒有「見紅就休」的適用問題。<br><br>若院所正常營運，兼職同仁原則上仍依排定班表出勤。<br><br>不過，若同仁因颱風或其他天災考量自身通勤安全，認為不便出勤，公司也會尊重同仁以安全為優先。",
+            reminder: "若無法出勤，請事先與院所聯繫，以利安排現場人力。"
+        }
+    ];
+
+    // 渲染 FAQ 問答集
+    const faqContainer = document.getElementById('faqContainer');
+    faqData.forEach(item => {
+        const faqItem = document.createElement('div');
+        faqItem.className = 'faq-item';
+        let reminderHtml = item.reminder ? `<div class="reminder">📌 <strong>提醒：</strong>${item.reminder}</div>` : '';
+        
+        faqItem.innerHTML = `
+            <div class="faq-question">${item.question}</div>
+            <div class="faq-answer">
+                <div>${item.answer}</div>
+                ${reminderHtml}
+            </div>
+        `;
+        faqContainer.appendChild(faqItem);
+    });
+
+    // 綁定 FAQ 點擊摺疊效果
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => { q.parentElement.classList.toggle('active'); });
+    });
+
+    // 分頁切換安全邏輯
+    function switchTab(clickedButton, tabId) {
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        document.getElementById(tabId).classList.add('active');
+        clickedButton.classList.add('active');
+    }
+</script>
+</body>
+</html>
