@@ -24,7 +24,6 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
             background-color: var(--warm-bg);
-            /* 豐富背景：細緻的點狀暖暖紋理 */
             background-image: radial-gradient(#ebdcd0 1px, transparent 1px);
             background-size: 24px 24px;
             color: var(--text-color);
@@ -41,7 +40,7 @@
             box-shadow: 0 8px 30px rgba(139, 115, 95, 0.12);
         }
 
-        /* 頂部標頭與四個吉祥物齊聚 */
+        /* 🚀 修正後的頂部標頭與四個吉祥物 RWD 響應式佈局 */
         header {
             text-align: center;
             margin-bottom: 35px;
@@ -54,14 +53,15 @@
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            gap: 12px;
+            gap: 2%;          /* 使用百分比間距，隨螢幕縮放 */
             margin-bottom: 20px;
-            flex-wrap: wrap;
+            width: 100%;
         }
 
         .mascot-img {
-            height: 90px;
-            width: auto;
+            width: 22%;       /* 核心修正：手機版每張圖片佔 22% 寬度，確保 4 張一定能並排 */
+            max-width: 90px;  /* 核心修正：電腦版最大不超過 90px，防止無限放大變形 */
+            height: auto;     /* 核心修正：高度自動等比例縮放，絕不壓扁 */
             object-fit: contain;
             filter: drop-shadow(2px 4px 6px rgba(139, 115, 95, 0.15));
             transition: transform 0.2s ease;
@@ -116,7 +116,6 @@
             box-shadow: 0 4px 12px rgba(46, 125, 50, 0.12);
         }
 
-        /* 分頁區塊顯示與隱藏 */
         .tab-content {
             display: none;
         }
@@ -164,7 +163,6 @@
             margin-bottom: 15px;
         }
 
-        /* 三大決策機制卡片 */
         .mode-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -236,7 +234,6 @@
             border-left: 4px solid #cdc3ba;
         }
 
-        /* 內頁小橫幅：帶有吉祥物與問候 */
         .intro-banner {
             display: flex;
             align-items: center;
@@ -258,7 +255,6 @@
             font-weight: bold;
         }
 
-        /* FAQ 樣式優化 */
         .faq-item {
             background: #ffffff;
             border: 1px solid var(--card-border);
@@ -360,6 +356,7 @@
         <button class="tab-btn" onclick="switchTab(this, 'faq-tab')">💬 天災假常見 QA</button>
     </div>
 
+    <!-- 分頁一：營運機制 -->
     <div id="mechanism-tab" class="tab-content active">
         <div class="intro-banner">
             <img class="intro-banner-img" src="全部職務馬寶妞_馬妞CRM.png" alt="馬妞CRM">
@@ -418,13 +415,14 @@
             <div class="text-content">同仁安全始終是公司最優先考量。若當日風雨已影響通勤安全，院所將視情況休診；若天候仍適合安全出勤，則依既有颱風班制度運作。</div>
             <ul class="list-style">
                 <li>平時預先規劃颱風班名單，以鄰近院所同仁優先支援。</li>
-                <li>優先考量同仁通勤距離及安全性安排出勤.</li>
+                <li>優先考量同仁通勤距離及安全性安排出勤。</li>
                 <li>提供天災出勤交通補助，協助降低同仁通勤負擔。</li>
             </ul>
             <div class="box-footer" style="border-left-color: var(--warm-accent); font-weight: 500;">同時，公司也尊重每位同仁對自身安全的判斷；如因天候因素確有通勤安全疑慮，應主動與院所主管聯繫，共同討論最適切的安排。</div>
         </div>
     </div>
 
+    <!-- 分頁二：FAQ -->
     <div id="faq-tab" class="tab-content">
         <div class="intro-banner" style="background: linear-gradient(135deg, #fff3e0, #ffffff); border-color: #ffe0b2;">
             <img class="intro-banner-img" src="全部職務馬寶妞_馬妞藥師 複本.png" alt="馬妞藥師">
@@ -439,7 +437,6 @@
 </div>
 
 <script>
-    // FAQ 資料庫
     const faqData = [
         {
             id: 1,
@@ -450,7 +447,7 @@
         {
             id: 2,
             question: "Q2：颱風天出勤是不是有雙倍薪？",
-            answer: "沒有。<br><br>政府宣布停班停課屬於天然災害停止上班措施，並非國定假日、例假日或休息日，因此依法並沒有雙倍薪資規定。<br><br>不過，感謝每位願意在天災期間協助維持醫療服務的夥伴，公司將提供交通補助，協助降低同仁通勤負擔，也希望讓大家在兼顧服務的同時，能更安心出勤。",
+            answer: "沒有。<br><br>政府宣布停班停課屬於天然災害停止上班措施，並非國定假日、例假日或休息日，因此依法項目並沒有雙倍薪資規定。<br><br>不過，感謝每位願意在天災期間協助維持醫療服務的夥伴，公司將提供交通補助，協助降低同仁通勤負擔，也希望讓大家在兼顧服務的同時，能更安心出勤。",
             reminder: ""
         },
         {
@@ -462,7 +459,7 @@
         {
             id: 4,
             question: "Q4：今天院所所在地沒有停班停課，但我住的地方停班停課，可以不出勤嗎？",
-            answer: "可以依自身通勤安全評估。<br><br>外要同仁的工作地、居住地或通勤必經地區任一地區宣布停班停課，即可依自身通勤狀況評估是否適合出勤。<br><br>若評估不宜出勤，請盡早通知院所，公司也會尊重同仁以安全為優先。",
+            answer: "可以依自身通勤安全評估。<br><br>只要同仁的工作地、居住地或通勤必經地區任一地區宣布停班停課，即可依自身通勤狀況評估是否適合出勤。<br><br>若評估不宜出勤，請盡早通知院所，公司也會尊重同仁以安全為優先。",
             reminder: "請與院所保持聯繫，方便掌握出勤情形及安排現場人力。"
         },
         {
@@ -479,7 +476,6 @@
         }
     ];
 
-    // 渲染 FAQ 問答集
     const faqContainer = document.getElementById('faqContainer');
     faqData.forEach(item => {
         const faqItem = document.createElement('div');
@@ -496,12 +492,10 @@
         faqContainer.appendChild(faqItem);
     });
 
-    // 綁定 FAQ 點擊摺疊效果
     document.querySelectorAll('.faq-question').forEach(q => {
         q.addEventListener('click', () => { q.parentElement.classList.toggle('active'); });
     });
 
-    // 分頁切換安全邏輯
     function switchTab(clickedButton, tabId) {
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
