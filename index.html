@@ -24,7 +24,6 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
             background-color: var(--warm-bg);
-            /* 豐富背景：細緻的點狀暖暖紋理 */
             background-image: radial-gradient(#ebdcd0 1px, transparent 1px);
             background-size: 24px 24px;
             color: var(--text-color);
@@ -41,7 +40,6 @@
             box-shadow: 0 8px 30px rgba(139, 115, 95, 0.12);
         }
 
-        /* 頂部標頭與四個吉祥物齊聚 */
         header {
             text-align: center;
             margin-bottom: 35px;
@@ -60,16 +58,12 @@
         }
 
         .mascot-img {
-            width: 22%;       /* 手機版每張圖片佔 22% 寬度，確保 4 張一定能並排 */
-            max-width: 90px;  /* 電腦版最大不超過 90px */
-            height: auto;     /* 高度自動等比例縮放 */
+            width: 22%;       
+            max-width: 90px;  
+            height: auto;     
             object-fit: contain;
             filter: drop-shadow(2px 4px 6px rgba(139, 115, 95, 0.15));
             transition: transform 0.2s ease;
-        }
-
-        .mascot-img:hover {
-            transform: translateY(-4px);
         }
 
         header h1 {
@@ -87,7 +81,6 @@
             letter-spacing: 1px;
         }
 
-        /* 溫暖分頁按鈕設計 */
         .tabs-container {
             display: flex;
             margin-bottom: 35px;
@@ -117,7 +110,6 @@
             box-shadow: 0 4px 12px rgba(46, 125, 50, 0.12);
         }
 
-        /* 分頁區塊顯示與隱藏 */
         .tab-content {
             display: none;
         }
@@ -132,7 +124,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 機制說明卡片樣式 */
         .section-box {
             background: #ffffff;
             border: 1px solid var(--card-border);
@@ -165,7 +156,6 @@
             margin-bottom: 15px;
         }
 
-        /* 三大決策機制卡片 */
         .mode-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -338,6 +328,17 @@
             padding-top: 25px;
             font-weight: 500;
         }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 26px; 
+                letter-spacing: 0px;
+                line-height: 1.3;
+            }
+            .container {
+                padding: 25px 15px; 
+            }
+        }
     </style>
 </head>
 <body>
@@ -355,8 +356,8 @@
     </header>
 
     <div class="tabs-container">
-        <button class="tab-btn active" onclick="switchTab(this, 'mechanism-tab')">📋 營運機制與初衷</button>
-        <button class="tab-btn" onclick="switchTab(this, 'faq-tab')">💬 天災假常見 QA</button>
+        <button id="tab-btn-mechanism" class="tab-btn active" onclick="clickMechanism()">📋 營運機制與初衷</button>
+        <button id="tab-btn-faq" class="tab-btn" onclick="clickFaq()">💬 天災假常見 QA</button>
     </div>
 
     <div id="mechanism-tab" class="tab-content active">
@@ -389,4 +390,149 @@
                 <div class="mode-card">
                     <svg viewBox="0 0 24 24" fill="#1976d2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.69 13.13c-.94.94-2.48.94-3.42 0l-4.4-4.4c-.94-.94-.94-2.48 0-3.42.94-.94 2.48-.94 3.42 0l4.4 4.4c.94.94.94 2.48 0 3.42z"/></svg>
                     <h3>🌀 啟動颱風班</h3>
-                    <p>依預規劃名單、鄰近同仁優先彈性出勤。</p
+                    <p>依預規劃名單、鄰近同仁優先彈性出勤。</p>
+                </div>
+                <div class="mode-card">
+                    <svg viewBox="0 0 24 24" fill="#d32f2f"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>
+                    <h3>🛑 休診</h3>
+                    <p>風雨已明顯影響通勤安全，啟動休診機制。</p>
+                </div>
+            </div>
+            
+            <div class="box-footer">此機制係因各地區受颱風影響程度不同，即使同一縣市，各區域風雨及交通狀況亦可能有所差異，因此以當日實際狀況作為判斷依據，更能兼顧安全與服務需求。</div>
+        </div>
+
+        <div class="section-box" style="background-color: #fafafa;">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                三、 建立此機制的原因（初衷與考量）
+            </h2>
+            <div class="text-content" style="line-height: 1.75;">過去，公司曾全面比照政府停班停課宣布休診，但多次遇到實際風雨不大，甚至無風無雨、天氣晴朗的情況。<br><br>當患者依原訂療程希望回診時，卻因院所休診而無法就醫，不僅影響後續治療安排，也曾接獲患者反映，周邊商家、百貨公司及其他診所皆正常營業，唯獨馬光休診，造成就醫上的不便。<br><br>身為醫療院所，我們希望在安全無虞的前提下，盡可能維持患者必要的醫療服務。</div>
+        </div>
+
+        <div class="section-box">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 15l-4-4 1.41-1.41L10 13.17l7.59-7.59L19 7l-9 9z"/></svg>
+                四、 同仁安全照顧措施
+            </h2>
+            <div class="text-content">同仁安全始終是公司最優先考量。若當日風雨已影響通勤安全，院所將視情況休診；若天候仍適合安全出勤，則依既有颱風班制度運作。</div>
+            <ul class="list-style">
+                <li>平時預先規劃颱風班名單，以鄰近院所同仁優先支援。</li>
+                <li>優先考量同仁通勤距離及安全性安排出勤。</li>
+                <li>提供天災出勤交通補助，協助降低同仁通勤負擔。</li>
+            </ul>
+            <div class="box-footer" style="border-left-color: var(--warm-accent); font-weight: 500;">同時，公司也尊重每位同仁對自身安全的判斷；如因天候因素確有通勤安全疑慮，應主動與院所主管聯繫，共同討論最適切的安排。</div>
+        </div>
+    </div>
+
+    <div id="faq-tab" class="tab-content">
+        <div class="intro-banner" style="background: linear-gradient(135deg, #fff3e0, #ffffff); border-color: #ffe0b2;">
+            <img class="intro-banner-img" src="全部職務馬寶妞_馬妞藥師 複本.png" alt="馬妞藥師">
+            <p>針對天災出勤、遲到或薪資等權益，馬妞幫大家整理了最常見的問答，點擊問題即可展開查閱喔！</p>
+        </div>
+        <div class="faq-section" id="faqContainer"></div>
+    </div>
+
+    <footer>
+        <p>馬光醫療網 管理處 人才資源發展</p>
+    </footer>
+</div>
+
+<script>
+    // 乾淨且安全的資料庫
+    const faqData = [
+        {
+            id: 1,
+            question: "Q1：今天颱風天，如果因天候影響交通而遲到，會算遲到嗎？",
+            answer: "原則上不會直接以遲到處理。<br><br>若政府宣布停班停課，但院所評估後仍正常營運，同仁配合服務需求出勤，若因天候因素影響交通而延誤到院，公司原則上都會協助同仁處理，不會直接列為遲到。<br><br>如有出勤異常情形，請同仁向區會計登記，以利後續協助處理。",
+            reminder: "請同仁仍以自身安全為優先；若預計會延後到院，也請提前通知院所，以利掌握出勤情形及安排現場人力調度。"
+        },
+        {
+            id: 2,
+            question: "Q2：颱風天出勤是不是有雙倍薪？",
+            answer: "沒有。<br><br>政府宣布停班停課屬於天然災害停止上班措施，並非國定假日、例假日或休息日，因此依法項目並沒有雙倍薪資規定。<br><br>不過，感謝每位願意在天災期間協助維持醫療服務的夥伴，公司將提供交通補助，協助降低同仁通勤負擔，也希望讓大家在兼顧服務的同時，能更安心出勤。",
+            reminder: ""
+        },
+        {
+            id: 3,
+            question: "Q3：政府宣布停班停課，但院所通知正常開診，我一定要出勤嗎？",
+            answer: "馬光因醫療服務性質，部分院所可能依現場風雨狀況維持營運。<br><br>若院所正常開診，原則上同仁仍依排定班表出勤；但若同仁因颱風或其他天災因素，評估自身通勤安全後值為不宜出勤，公司也會尊重同仁以安全為優先。<br><br>出勤者正常給薪；若不便出勤，可依公司規定使用天然災害假或其他可運用之假別。",
+            reminder: "若決定不出勤，請儘早通知院所，方便現場安排人力，也讓病患服務能順利銜接。"
+        },
+        {
+            id: 4,
+            question: "Q4：今天院所所在地沒有停班停課，但我住的地方停班停課，可以不出勤嗎？",
+            answer: "可以依自身通勤安全評估。<br><br>只要同仁的工作地、居住地或通勤必經地區任一地區宣布停班停課，即可依自身通勤狀況評估是否適合出勤。<br><br>若評估不宜出勤，請盡早通知院所，公司也會尊重同仁以安全為優先。",
+            reminder: "請與院所保持聯繫，方便掌握出勤情形及安排現場人力。"
+        },
+        {
+            id: 5,
+            question: "Q5：如果院所因風雨過大決定臨時停診，今天沒有上班怎麼辦？",
+            answer: "若院所因天候因素調整營運或臨時停診，同仁當日可依公司規定使用天然災害假或其他可運用之假別，不影響全勤紀錄。<br><br>公司也會依當日實際營運及相關規定協助辦理後續作業，並以兼顧同仁權益及病患照護為原則。",
+            reminder: ""
+        },
+        {
+            id: 6,
+            question: "Q6：兼職同仁平常見紅休，颱風天還需要上班嗎？",
+            answer: "天災假並非國定假日或例假，因此沒有「見紅就休」的適用問題。<br><br>若院所正常營運，兼職同仁原則上仍依排定班表出勤。<br><br>不過，若同仁因颱風或其他天災考量自身通勤安全，認為不便出勤，公司也會尊重同仁以安全為優先。",
+            reminder: "若無法出勤，請事先與院所聯繫，以利安排現場人力。"
+        },
+        {
+            id: 7,
+            question: "Q7：實習診助（實習生）於天災期間需要出勤嗎？",
+            answer: "考量實習診助仍處於實習(就學)階段，天災期間將優先兼顧其就學與人身安全，因此原則上不安排實習生出勤。",
+            reminder: ""
+        },
+        {
+            id: 8,
+            question: "Q8：懷孕同仁於天災期間需要出勤嗎？",
+            answer: "考量懷孕同仁於天災期間的通勤風險，以安全為優先，原則上優先安排不出勤。<br><br>若懷孕同仁經審慎評估後，仍希望配合出勤，需確認自身身體狀況適合，並簽署同意出勤聲明後，始得安排出勤。",
+            reminder: "院所主管應主動關心懷孕同仁的身體狀況，不以出勤為優先考量，並協助安排最安全、最合適的應變方式。"
+        }
+    ];
+
+    // 動態安全渲染
+    try {
+        const faqContainer = document.getElementById('faqContainer');
+        faqData.forEach(item => {
+            const faqItem = document.createElement('div');
+            faqItem.className = 'faq-item';
+            let reminderHtml = item.reminder ? `<div class="reminder">📌 <strong>提醒：</strong>${item.reminder}</div>` : '';
+            
+            faqItem.innerHTML = `
+                <div class="faq-question">${item.question}</div>
+                <div class="faq-answer">
+                    <div>${item.answer}</div>
+                    ${reminderHtml}
+                </div>
+            `;
+            faqContainer.appendChild(faqItem);
+        });
+    } catch (e) {
+        console.log('FAQ 渲染錯誤:', e);
+    }
+
+    // 綁定手風琴展開
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', function() { 
+            this.parentElement.classList.toggle('active'); 
+        });
+    });
+
+    // 100% 絕對驅動分頁邏輯
+    function clickMechanism() {
+        document.getElementById('mechanism-tab').style.display = 'block';
+        document.getElementById('faq-tab').style.display = 'none';
+        document.getElementById('tab-btn-mechanism').classList.add('active');
+        document.getElementById('tab-btn-faq').classList.remove('active');
+    }
+
+    function clickFaq() {
+        document.getElementById('mechanism-tab').style.display = 'none';
+        document.getElementById('faq-tab').style.display = 'block';
+        document.getElementById('tab-btn-mechanism').classList.remove('active');
+        document.getElementById('tab-btn-faq').classList.add('active');
+    }
+</script>
+</body>
+</html>
